@@ -1,0 +1,62 @@
+name: Release on Merge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Create Release and Publish to PyPI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip setuptools wheel
+          pip install bump2version
+
+      # Step 4: Bump the version (patch version by default, can be customized)
+      # You can change --new-version to match the bumping strategy you want (e.g., patch, minor, major)
+      - name: Bump version
+        id: bump_version
+        run: |
+          source venv/bin/activate
+          bump2version patch
+
+      - name: Push changes and tags
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git push origin HEAD:main --follow-tags
+
+      # Step 6: Generate release notes and create a GitHub release
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.bump_version.outputs.new_version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the package
+        run: |
+          source venv/bin/activate
+          python setup.py sdist bdist_wheel
+
+      - name: Publish to PyPI
+        run: |
+          source venv/bin/activate
+          twine upload dist/*
+        env:
+          TWINE_USERNAME: "__token__"
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
