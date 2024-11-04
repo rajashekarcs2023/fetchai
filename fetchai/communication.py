@@ -2,7 +2,7 @@ import base64
 import hashlib
 import json
 import struct
-from typing import Any
+from typing import Optional, Any
 from uuid import uuid4
 from dataclasses import dataclass
 
@@ -21,11 +21,13 @@ class Envelope(BaseModel):
     target: str
     session: UUID4
     schema_digest: str
-    protocol_digest: str | None = None
-    payload: str | None = None
-    expires: int | None = None
-    nonce: int | None = None
-    signature: str | None = None
+    protocol_digest: Optional[str] = (
+        "proto:a03398ea81d7aaaf67e72940937676eae0d019f8e1d8b5efbadfef9fd2e98bb2",
+    )
+    payload: Optional[str] = None
+    expires: Optional[int] = None
+    nonce: Optional[int] = None
+    signature: Optional[str] = None
 
     def encode_payload(self, value: JsonStr):
         self.payload = base64.b64encode(value.encode()).decode()
@@ -72,9 +74,15 @@ def lookup_endpoint_for_agent(agent_address: str) -> str:
 def send_message_to_agent(
     sender: Identity,
     target: str,
-    protocol_digest: str | None,
-    model_digest: str,
     payload: Any,
+    # The default protocol for AI to AI conversation, use for standard chat
+    protocol_digest: Optional[
+        str
+    ] = "proto:a03398ea81d7aaaf67e72940937676eae0d019f8e1d8b5efbadfef9fd2e98bb2",
+    # The default model for AI to AI conversation, use for standard chat
+    model_digest: Optional[
+        str
+    ] = "model:708d789bb90924328daa69a47f7a8f3483980f16a1142c24b12972a2e4174bc6",
 ):
     """
     Send a message to an agent.
