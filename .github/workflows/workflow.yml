@@ -1,4 +1,4 @@
-name: Version Bump and Create Pull Request
+name: Release on Merge
 
 on:
   pull_request:
@@ -8,8 +8,8 @@ on:
       - closed
 
 jobs:
-  version_bump:
-    name: Version Bump and PR Creation
+  release:
+    name: Create Release and Publish to PyPI
     runs-on: ubuntu-latest
 
     if: github.event.pull_request.merged == true
@@ -34,11 +34,14 @@ jobs:
         with:
           python-version: '3.8'
 
+
       - name: Install dependencies
         run: |
           python -m venv venv
           source venv/bin/activate
-          pip install --upgrade pip setuptools wheel bump2version twine
+          pip install --upgrade pip setuptools wheel
+          pip install bump2version
+          pip install twine
 
       - name: Configure git user
         run: |
@@ -46,13 +49,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       # Step 4: Bump the version (patch version by default, can be customized)
+      # You can change --new-version to match the bumping strategy you want (e.g., patch, minor, major)
       - name: Bump version
         id: bump_version
         run: |
           source venv/bin/activate
           bump2version patch
 
-      # Step 5: Capture the new version and set it as an output
       - name: Get the new version
         id: get_version
         run: |
@@ -62,24 +65,27 @@ jobs:
           echo "::set-output name=new_version::$new_version"
         shell: bash
 
-      # Step 6: Create a new branch for the version bump
-      - name: Create new branch for version bump
+      - name: Push changes and tags
         run: |
-          git checkout -b version-bump-v${{ steps.get_version.outputs.new_version }}
-          git commit -am "Version bump to v${{ steps.get_version.outputs.new_version }}"
+          git push origin HEAD:main --follow-tags
 
-      # Step 7: Push the new branch
-      - name: Push new branch
-        run: |
-          git push origin version-bump-v${{ steps.get_version.outputs.new_version }}
-
-      # Step 8: Create a pull request for the version bump
-      - name: Create pull request
-        uses: peter-evans/create-pull-request@v4
+      # Step 6: Generate release notes and create a GitHub release
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Version bump to v${{ steps.get_version.outputs.new_version }}"
-          branch: version-bump-v${{ steps.get_version.outputs.new_version }}
-          title: "Version bump to v${{ steps.get_version.outputs.new_version }}"
-          body: "This pull request bumps the version to v${{ steps.get_version.outputs.new_version }}."
-          base: main
+          tag_name: v${{ steps.get_version.outputs.new_version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the package
+        run: |
+          source venv/bin/activate
+          python setup.py sdist bdist_wheel
+
+      - name: Publish to PyPI
+        run: |
+          source venv/bin/activate
+          twine upload dist/*
+        env:
+          TWINE_USERNAME: "__token__"
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
