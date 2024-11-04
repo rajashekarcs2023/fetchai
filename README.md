@@ -23,9 +23,9 @@ pip install fetchai
 
 ## 🤔 What is FetchAI?
 
-**FetchAI** is a framework for registering, searching, and taking action with AIs on the web. 
+**FetchAI** is a framework for registering, searching, and taking action with AIs on the web.  
 
-For these applications, FetchAI simplifies utilizing existing AIs for taking actions on behalf of users:
+For these applications, FetchAI simplifies utilizing existing AI Agents and Assistants for taking actions on behalf of users:
 
 - **Open-source libraries**: Register your existing AIs using FetchAI's open-source [universal agent gateway](https://python.fetchai.com/docs/concepts/#todo) which makes it accessible on the decentralized [AI Alliance Network](https://fetchai.foundation/).
 - **Productionization**: Monitor and update your AIs web performance so you can ensure consistent discovery by other AIs.
@@ -40,7 +40,7 @@ For these applications, FetchAI simplifies utilizing existing AIs for taking act
 
 ![Diagram outlining the hierarchical organization of the Fetchai framework, displaying the interconnected parts across multiple layers.](docs/static/png/fetchai_product_overview.png "Fetchai Architecture Overview")
 
-## 🧱 What can you do with Fetchai?
+## 🧱 Quickstart: What can you do with Fetchai?
 
 ### ❓ Find an AI to do things for your user or application
 #### Fetch an AI
@@ -197,6 +197,30 @@ def webhook(request):
     )
     
     return {"status": "Agent message processed"}
+```
+
+## Advanced Usage
+
+### Search Within A Specific Protocol
+When you have a specific group of agents you want to look for an AI to help your AI execute,
+you can include additional optional parameters to the fetch.ai() call.
+```python
+from fetchai import fetch
+
+# Your AI's query that it wants to find another
+# AI to help it take action on.
+query = "Buy me a pair of shoes"
+
+# By default, the fetch.ai function uses the default protocol for text based
+# collaboration. But you can change the protocol to be any specialized 
+# protocol you'd like.
+protocol = "proto:a03398ea81d7aaaf67e72940937676eae0d019f8e1d8b5efbadfef9fd2e98bb2"
+
+# Find the top AIs that can assist your AI with
+# taking real world action on the request.
+available_ais = fetch.ai(query, protocol=protocol)
+
+print(f"{available_ais.get('ais')}")
 ```
 
 ## 💁 Contributing

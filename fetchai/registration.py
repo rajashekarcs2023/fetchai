@@ -58,11 +58,13 @@ class AgentRegistrationAttestation(BaseModel):
 def register_with_agentverse(
     identity: Identity,
     url: str,
-    protocol_digest: str,
     agentverse_token: str,
     agent_title: str,
     readme: str,
     *,
+    protocol_digest: Optional[
+        str
+    ] = "proto:a03398ea81d7aaaf67e72940937676eae0d019f8e1d8b5efbadfef9fd2e98bb2",
     almanac_api: Optional[str] = None,
 ):
     """
