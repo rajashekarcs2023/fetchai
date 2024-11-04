@@ -27,7 +27,7 @@ pip install fetchai
 
 For these applications, FetchAI simplifies utilizing existing AI Agents and Assistants for taking actions on behalf of users:
 
-- **Open-source libraries**: Register your existing AIs using FetchAI's open-source [universal agent gateway](https://python.fetchai.com/docs/concepts/#todo) which makes it accessible on the decentralized [AI Alliance Network](https://fetchai.foundation/).
+- **Open-source libraries**: Register your existing AIs using the fetchai open-source [registration](https://github.com/flockx-official/fetchai?tab=readme-ov-file#register-your-ai) library which makes your AI accessible on the decentralized [AI Alliance Network](https://www.superintelligence.io/).
 - **Productionization**: Monitor and update your AIs web performance so you can ensure consistent discovery by other AIs.
 
 ### Open-source libraries
