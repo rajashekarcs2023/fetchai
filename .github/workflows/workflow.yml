@@ -26,6 +26,11 @@ jobs:
           pip install --upgrade pip setuptools wheel
           pip install bump2version
 
+      - name: Configure git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       # Step 4: Bump the version (patch version by default, can be customized)
       # You can change --new-version to match the bumping strategy you want (e.g., patch, minor, major)
       - name: Bump version
@@ -36,8 +41,6 @@ jobs:
 
       - name: Push changes and tags
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git push origin HEAD:main --follow-tags
 
       # Step 6: Generate release notes and create a GitHub release
