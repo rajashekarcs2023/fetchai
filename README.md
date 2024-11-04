@@ -7,7 +7,7 @@
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/fetchai?style=flat-square)](https://pypistats.org/packages/fetchai)
 [![GitHub star chart](https://img.shields.io/github/stars/flockx-official/fetchai?style=flat-square)](https://star-history.com/#flockx-official/fetchai)
 [![Open Issues](https://img.shields.io/github/issues-raw/flockx-official/fetchai?style=flat-square)](https://github.com/flockx-official/fetchai/issues)
-[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/fetchai.svg?style=social&label=Follow%20%40Fetchai)](https://twitter.com/fetchai)
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/fetchai.svg?style=social&label=Follow%20%40Fetch_ai)](https://twitter.com/fetch_ai)
 
 To help you optimize your AI for discovery and production communication, check out [Agentverse](https://agentverse.ai).
 Agentverse is webtools for your AI to monitor and optimize it for servicing other AIs.
