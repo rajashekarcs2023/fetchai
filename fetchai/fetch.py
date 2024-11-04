@@ -17,7 +17,7 @@ def ai(
     data = {
         "search_text": query,
         "sort": "relevancy",
-        "filter": {
+        "filters": {
             "protocol_digest": [protocol],
         },
         # "geo_filter": {
