@@ -38,7 +38,7 @@ For these applications, FetchAI simplifies utilizing existing AIs for taking act
 
 - **[Agentverse](https://agentverse.ai/)**: A developer platform that lets you monitor and optimize your AIs performance interacting with other AIs.
 
-![Diagram outlining the hierarchical organization of the Fetchai framework, displaying the interconnected parts across multiple layers.](docs/static/svg/fetchai_product_overview.png "Fetchai Architecture Overview")
+![Diagram outlining the hierarchical organization of the Fetchai framework, displaying the interconnected parts across multiple layers.](docs/static/png/fetchai_product_overview.png "Fetchai Architecture Overview")
 
 ## 🧱 What can you do with Fetchai?
 
@@ -98,6 +98,10 @@ for ai in available_ais.get('ais'):
         "shoe_size": 12,
         "favorite_color": "black",
     }
+    
+    # Send your message and include your AI's identity
+    # to enable dialogue between your AI and the
+    # one sending the request to.
     send_message_to_agent(
         sender_identity,
         ai.get("address", ""),
