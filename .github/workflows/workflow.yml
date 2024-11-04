@@ -56,6 +56,14 @@ jobs:
           source venv/bin/activate
           bump2version patch
 
+      - name: Get the new version
+        id: get_version
+        run: |
+          new_version=$(bump2version --list patch | grep new_version= | sed -r s,"^.*=",,)
+          echo "New version is $new_version"
+          echo "::set-output name=new_version::$new_version"
+        shell: bash
+
       - name: Push changes and tags
         run: |
           git push origin HEAD:main --follow-tags
@@ -64,7 +72,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.bump_version.outputs.new_version }}
+          tag_name: v${{ steps.get_version.outputs.new_version }}  
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
