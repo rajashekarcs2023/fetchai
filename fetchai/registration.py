@@ -2,6 +2,7 @@ import hashlib
 import json
 
 import requests
+from typing import Optional, Union, List, Dict
 from pydantic import BaseModel
 
 from fetchai.crypto import Identity
@@ -19,10 +20,10 @@ class AgentEndpoint(BaseModel):
 
 class AgentRegistrationAttestation(BaseModel):
     agent_address: str
-    protocols: list[str]
-    endpoints: list[AgentEndpoint]
-    metadata: dict[str, str | dict[str, str]] | None = None
-    signature: str | None = None
+    protocols: List[str]
+    endpoints: List[AgentEndpoint]
+    metadata: Optional[Dict[str, Union[str, Dict[str, str]]]] = None
+    signature: Optional[str] = None
 
     def sign(self, identity: Identity):
         digest = self._build_digest()
@@ -62,7 +63,7 @@ def register_with_agentverse(
     agent_title: str,
     readme: str,
     *,
-    almanac_api: str | None = None,
+    almanac_api: Optional[str] = None,
 ):
     """
     Register the agent with the Agentverse API.
