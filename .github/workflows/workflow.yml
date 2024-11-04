@@ -19,6 +19,17 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Check if it's the upstream repository
+        run: |
+          if [ "$GITHUB_REPOSITORY" != "flockx-official/fetchai" ]; then
+            echo "Not the upstream repository. Skipping version bump."
+            exit 0
+          fi
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "Not the main branch. Skipping version bump."
+            exit 0
+          fi
+
       - name: Install dependencies
         run: |
           python -m venv venv
