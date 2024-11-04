@@ -1,34 +1,37 @@
 name: Release on Merge
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - closed
 
 jobs:
   release:
     name: Create Release and Publish to PyPI
     runs-on: ubuntu-latest
 
+    if: github.event.pull_request.merged == true
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Check if it's the upstream repository
+      - name: Check if it's upstream and main branch
         run: |
           if [ "$GITHUB_REPOSITORY" != "flockx-official/fetchai" ]; then
             echo "Not the upstream repository. Skipping version bump."
             exit 0
           fi
-          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
-            echo "Not the main branch. Skipping version bump."
+          if [ "${{ github.event.pull_request.base.ref }}" != "main" ]; then
+            echo "Not merging into main. Skipping version bump."
             exit 0
           fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
 
       - name: Install dependencies
         run: |
@@ -36,6 +39,7 @@ jobs:
           source venv/bin/activate
           pip install --upgrade pip setuptools wheel
           pip install bump2version
+          pip install twine
 
       - name: Configure git user
         run: |

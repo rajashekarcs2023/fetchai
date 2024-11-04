@@ -10,7 +10,7 @@
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/fetchai.svg?style=social&label=Follow%20%40Fetchai)](https://twitter.com/fetchai)
 
 To help you optimize your AI for discovery and production communication, check out [Agentverse](https://agentverse.ai).
-[Agentverse](https://agentverse.ai) is webtools for your AI to monitor and optimize it for servicing other AIs.
+Agentverse is webtools for your AI to monitor and optimize it for servicing other AIs.
 
 ## Quick Install
 
