@@ -59,6 +59,7 @@ jobs:
       - name: Get the new version
         id: get_version
         run: |
+          source venv/bin/activate
           new_version=$(bump2version --list patch | grep new_version= | sed -r s,"^.*=",,)
           echo "New version is $new_version"
           echo "::set-output name=new_version::$new_version"
@@ -72,7 +73,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.get_version.outputs.new_version }}  
+          tag_name: v${{ steps.get_version.outputs.new_version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
