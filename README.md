@@ -1,4 +1,4 @@
-# 🦜️🔗 FetchAI
+# FetchAI
 
 ⚡ Find the right AI at the right time ⚡
 
