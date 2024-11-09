@@ -11,6 +11,7 @@ from mnemonic import Mnemonic
 # Load environment variables from .env file
 load_dotenv()
 
+
 @click.group()
 def cli():
     """CLI tool for AgentVerse registration and identity management."""
@@ -23,7 +24,9 @@ def load_environment_variables():
     ai_key = os.getenv("AI_KEY")
 
     if not agentverse_key or not ai_key:
-        click.echo("Error: AGENTVERSE_KEY or AI_KEY not found in environment variables.")
+        click.echo(
+            "Error: AGENTVERSE_KEY or AI_KEY not found in environment variables."
+        )
         sys.exit(1)
 
     return agentverse_key, ai_key
@@ -32,7 +35,7 @@ def load_environment_variables():
 # Utility function to load README content
 def load_readme(file_path):
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, "r") as file:
             return file.read().strip()
     except FileNotFoundError:
         click.echo(f"Error: README file not found at {file_path}")
@@ -44,10 +47,29 @@ def load_readme(file_path):
 
 # Register command
 @cli.command()
-@click.option('-n', '--name', prompt="Enter AI name", required=True, help="Name of the AI")
-@click.option('-r', '--readme', prompt="Enter README file path", required=True, help="Path to README file")
-@click.option('-w', '--webhook', prompt="Enter Webhook URL", required=True, help="Webhook URL for the AI")
-@click.option('-f', '--force', is_flag=True, help="Force registration even if agent is already registered")
+@click.option(
+    "-n", "--name", prompt="Enter AI name", required=True, help="Name of the AI"
+)
+@click.option(
+    "-r",
+    "--readme",
+    prompt="Enter README file path",
+    required=True,
+    help="Path to README file",
+)
+@click.option(
+    "-w",
+    "--webhook",
+    prompt="Enter Webhook URL",
+    required=True,
+    help="Webhook URL for the AI",
+)
+@click.option(
+    "-f",
+    "--force",
+    is_flag=True,
+    help="Force registration even if agent is already registered",
+)
 def register(name, readme, webhook, force):
     """Register an agent with AgentVerse and save to .env."""
     # Load environment variables and read README file
@@ -60,11 +82,7 @@ def register(name, readme, webhook, force):
 
         # Register the agent with Agentverse
         result = register_with_agentverse(
-            ai_identity,
-            webhook,
-            agentverse_key,
-            name,
-            readme_content
+            ai_identity, webhook, agentverse_key, name, readme_content
         )
         click.echo(f"Agent successfully registered: {result}")
 
@@ -79,11 +97,24 @@ def register(name, readme, webhook, force):
 
 # Generate identity command
 @cli.command(name="generate-identity")
-@click.option('-s', '--strength', type=int, default=256, show_default=True,
-              help="Strength of the mnemonic (128 or 256 bits)")
-@click.option('-n', '--name', default='AGENT_KEY', show_default=True,
-              help="Name of the environment variable")
-@click.option('-o', '--output', type=click.Path(), help="Output file for saving the generated key")
+@click.option(
+    "-s",
+    "--strength",
+    type=int,
+    default=256,
+    show_default=True,
+    help="Strength of the mnemonic (128 or 256 bits)",
+)
+@click.option(
+    "-n",
+    "--name",
+    default="AGENT_KEY",
+    show_default=True,
+    help="Name of the environment variable",
+)
+@click.option(
+    "-o", "--output", type=click.Path(), help="Output file for saving the generated key"
+)
 def identity(strength, name, output):
     """Generate an agent identity key as a mnemonic phrase and optionally save to file or .env."""
 
@@ -94,8 +125,8 @@ def identity(strength, name, output):
 
     # Output the generated key to the specified file or stdout
     if output:
-        with open(output, 'a') as f:
-            f.write(env_record + '\n')
+        with open(output, "a") as f:
+            f.write(env_record + "\n")
         click.echo(f"{name} ({strength} bits) appended to {output}")
     else:
         click.echo(env_record)
@@ -107,7 +138,10 @@ def identity(strength, name, output):
     # Check if the key already exists in .env
     if name in existing_env:
         # Ask user to confirm overwrite
-        if not click.confirm(f"{name} already exists in .env. Do you want to overwrite it?", default=False):
+        if not click.confirm(
+            f"{name} already exists in .env. Do you want to overwrite it?",
+            default=False,
+        ):
             click.echo("Key not saved to .env.")
             return
 
