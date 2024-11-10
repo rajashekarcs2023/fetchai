@@ -140,8 +140,8 @@ def identity(strength, name, output):
     if name in existing_env:
         # Ask user to confirm overwrite
         if not click.confirm(
-                f"{name} already exists in .env. Do you want to overwrite it?",
-                default=False,
+            f"{name} already exists in .env. Do you want to overwrite it?",
+            default=False,
         ):
             click.echo("Key not saved to .env.")
             return
@@ -152,32 +152,51 @@ def identity(strength, name, output):
 
 
 @cli.command(name="generate-readme")
-@click.option('-o', '--output', type=click.Path(), default="README.xml", show_default=True,
-              help="Output file for the generated README in XML format")
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    default="README.xml",
+    show_default=True,
+    help="Output file for the generated README in XML format",
+)
 def generate_readme(output):
     """Generate a README XML file for the AI with user inputs."""
 
     # Prompt the user for necessary information
     name = click.prompt("Enter the AI's name")
-    description = click.prompt("Enter a description of the AI's capabilities and offerings")
+    description = click.prompt(
+        "Enter a description of the AI's capabilities and offerings"
+    )
 
     # Use cases
     use_cases = []
     while True:
-        use_case = click.prompt("Enter a use case (or leave blank to finish)", default="", show_default=False)
+        use_case = click.prompt(
+            "Enter a use case (or leave blank to finish)",
+            default="",
+            show_default=False,
+        )
         if not use_case:
             break
         use_cases.append(use_case)
 
     # Payload requirements
-    payload_description = click.prompt("Enter a description for the payload requirements")
+    payload_description = click.prompt(
+        "Enter a description for the payload requirements"
+    )
     payload_requirements = []
     while True:
-        parameter = click.prompt("Enter a payload parameter name (or leave blank to finish)", default="",
-                                 show_default=False)
+        parameter = click.prompt(
+            "Enter a payload parameter name (or leave blank to finish)",
+            default="",
+            show_default=False,
+        )
         if not parameter:
             break
-        parameter_description = click.prompt(f"Enter a description for parameter '{parameter}'")
+        parameter_description = click.prompt(
+            f"Enter a description for parameter '{parameter}'"
+        )
         payload_requirements.append((parameter, parameter_description))
 
     # Create XML structure
@@ -210,11 +229,11 @@ def generate_readme(output):
         param_desc_elem.text = param_desc
 
     # Convert to a pretty XML string
-    raw_xml = tostring(root, 'utf-8')
+    raw_xml = tostring(root, "utf-8")
     pretty_xml = parseString(raw_xml).toprettyxml(indent="    ")
 
     # Write to output file
-    with open(output, 'w') as f:
+    with open(output, "w") as f:
         f.write(pretty_xml)
     click.echo(f"README generated and saved to {output}")
 
