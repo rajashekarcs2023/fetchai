@@ -5,6 +5,50 @@ from fetchai.crypto import Identity
 from fetchai.registration import register_with_agentverse
 from cli.env import load_environment_variables
 from cli.readme import load_readme
+
+"""
+register.py
+
+This module provides functionality for registering an AI agent with AgentVerse.
+
+The main component of this module is the 'register' command, which is implemented
+using the Click library for creating command-line interfaces. This command allows
+users to register their AI agent by providing necessary information such as the
+AI's name, README file path, and webhook URL.
+
+Usage:
+    fetchai-cli register [OPTIONS]
+
+Options:
+    -n, --name TEXT     Name of the AI (required, prompted if not provided)
+    -r, --readme TEXT   Path to README file (required, prompted if not provided)
+    -w, --webhook TEXT  Webhook URL for the AI (required, prompted if not provided)
+    -f, --force         Force registration even if agent is already registered
+    --help              Show this message and exit.
+
+The registration process includes:
+1. Loading environment variables (AgentVerse key and agent key)
+2. Reading the content of the provided README file
+3. Creating an AI identity using the agent key
+4. Registering the agent with AgentVerse
+5. Saving the AI identity and name to a .env file
+
+If any errors occur during the registration process, they will be displayed
+and the program will exit with a non-zero status code.
+
+Dependencies:
+    - click: For creating the command-line interface
+    - dotenv: For setting environment variables
+    - fetchai.crypto: For creating AI identity
+    - fetchai.registration: For registering with AgentVerse
+    - cli.env: For loading environment variables
+    - cli.readme: For loading README content
+
+Note: This script assumes that the necessary environment variables (AGENTVERSE_KEY
+and AGENT_KEY) are set or can be loaded from a .env file.
+"""
+
+
 # Register command
 
 @click.command(name="register")

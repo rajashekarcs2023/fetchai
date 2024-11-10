@@ -1,4 +1,50 @@
 # cli/identity.py
+"""
+identity.py
+
+This module provides functionality for generating and managing agent identity keys
+within the FetchAI CLI tool. It offers a command-line interface for creating
+mnemonic phrases that serve as identity keys for AI agents.
+
+The main component of this module is the 'generate-identity' command, implemented
+using the Click library for creating command-line interfaces. This command allows
+users to generate a new identity key with specified parameters and optionally save
+it to a file or the project's .env file.
+
+Usage:
+    fetchai-cli generate-identity [OPTIONS]
+
+Options:
+    -s, --strength INTEGER  Strength of the mnemonic (128 or 256 bits) [default: 256]
+    -n, --name TEXT         Name of the environment variable [default: AGENT_KEY]
+    -o, --output PATH       Output file for saving the generated key
+    --help                  Show this message and exit.
+
+The identity generation process includes:
+1. Creating a mnemonic phrase using the specified strength
+2. Optionally saving the generated key to a specified output file
+3. Checking for existing keys in the .env file
+4. Prompting for confirmation if overwriting an existing key
+5. Saving the new key to the .env file
+
+Key Features:
+- Generates mnemonic phrases of either 128 or 256 bits strength
+- Allows custom naming of the environment variable for the key
+- Provides options for outputting the key to a file or directly to stdout
+- Implements safeguards against accidental overwriting of existing keys
+- Integrates with the project's .env file for persistent storage of keys
+
+Dependencies:
+    - click: For creating the command-line interface
+    - dotenv: For managing environment variables and .env files
+    - mnemonic: For generating mnemonic phrases
+
+Note: This script assumes the existence of a .env file in the project root for
+storing environment variables. If the file doesn't exist, it will be created
+when saving a new key.
+"""
+
+# Import statements and code follow here...
 import os
 import click
 from dotenv import load_dotenv, set_key, dotenv_values
