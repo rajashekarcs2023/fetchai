@@ -16,7 +16,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "fetchai-cli = cli.cli:cli"  # Link to the main `cli` function in cli.py
+            "fetchai-cli = fetchai.cli:cli"  # Link to the main `cli` function in cli.py
         ]
     },
     extras_require={
