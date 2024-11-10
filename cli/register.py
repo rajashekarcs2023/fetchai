@@ -51,6 +51,7 @@ and AGENT_KEY) are set or can be loaded from a .env file.
 
 # Register command
 
+
 @click.command(name="register")
 @click.option(
     "-n", "--name", prompt="Enter AI name", required=True, help="Name of the AI"
@@ -97,4 +98,3 @@ def register(name, readme, webhook, force):
     except Exception as e:
         click.echo(f"Error registering agent: {str(e)}")
         sys.exit(1)
-

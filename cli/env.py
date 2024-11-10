@@ -3,7 +3,6 @@ import sys
 import os
 
 
-
 # Load environment variables from .env and validate keys
 def load_environment_variables():
     agentverse_key = os.getenv("AGENTVERSE_KEY")
@@ -16,4 +15,3 @@ def load_environment_variables():
         sys.exit(1)
 
     return agentverse_key, agent_key
-

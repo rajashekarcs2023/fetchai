@@ -14,11 +14,10 @@ def cli():
     """CLI tool for AgentVerse registration and identity management."""
     pass
 
+
 cli.add_command(readme)
 cli.add_command(identity)
 cli.add_command(register)
-
-
 
 
 if __name__ == "__main__":
