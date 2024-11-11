@@ -10,7 +10,15 @@ setup(
         "pydantic>=2.7.4,<3.0",
         "requests>=2.32.3,<3.0",
         "httpx>=0.23.0,<1.0",
+        "mnemonic>=0.21",
+        "click>=8.1.2,<9.0",
+        "python-dotenv>=1.0.1",
     ],
+    entry_points={
+        "console_scripts": [
+            "fetchai-cli = fetchai.cli:cli"  # Link to the main `cli` function in cli.py
+        ]
+    },
     extras_require={
         "dev": [
             "black",
