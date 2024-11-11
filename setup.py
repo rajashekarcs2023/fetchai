@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="fetchai",
-    version="0.1.19",
+    version="0.1.20",
     packages=find_packages(),  # Automatically find all packages in the folder
     install_requires=[
         "bech32>=1.2.0,<2.0",
