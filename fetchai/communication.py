@@ -11,6 +11,7 @@ from pydantic import BaseModel, UUID4
 
 from fetchai.crypto import Identity
 from fetchai.registration import DEFAULT_ALMANAC_API_URL
+from fetchai.logging import logger
 
 JsonStr = str
 
@@ -65,9 +66,13 @@ class Envelope(BaseModel):
 
 
 def lookup_endpoint_for_agent(agent_address: str) -> str:
+    request_meta = {"agent_address": agent_address, "lookup_url": DEFAULT_ALMANAC_API_URL}
+    logger.debug("looking up endpoint for agent", extra=request_meta)
     r = requests.get(f"{DEFAULT_ALMANAC_API_URL}/agents/{agent_address}")
     r.raise_for_status()
 
+    request_meta["response_status"] = r.status_code
+    logger.info("Got response looking up agent endpoint")
     return r.json()["endpoints"][0]["url"]
 
 
@@ -114,12 +119,15 @@ def send_message_to_agent(
     print(endpoint)
 
     # send the envelope to the target agent
+    request_meta = {"agent_address": target, "agent_endpoint": endpoint}
+    logger.debug("Sending message to agent", extra=request_meta)
     r = requests.post(
         endpoint,
         headers={"content-type": "application/json"},
         data=env.model_dump_json(),
     )
     r.raise_for_status()
+    logger.info("Sent message to agent", extra=request_meta)
 
 
 @dataclass

@@ -6,6 +6,7 @@ from typing import Optional, Union, List, Dict
 from pydantic import BaseModel
 
 from fetchai.crypto import Identity
+from fetchai.logging import logger
 
 
 DEFAULT_AGENTVERSE_URL = "https://agentverse.ai"
@@ -81,6 +82,17 @@ def register_with_agentverse(
     almanac_api = almanac_api or DEFAULT_ALMANAC_API_URL
 
     agent_address = identity.address
+    registration_metadata = {
+        "almanac_endpoint": almanac_api,
+        "agent_title": agent_title,
+        "agent_address": agent_address,
+        "agent_endpoint": url,
+        "protocol_digest": protocol_digest,
+    }
+    logger.info(
+        "Registering with Almanac API",
+        extra=registration_metadata,
+    )
 
     # create the attestation
     attestation = AgentRegistrationAttestation(
@@ -102,6 +114,10 @@ def register_with_agentverse(
         data=attestation.model_dump_json(),
     )
     r.raise_for_status()
+    logger.debug(
+        "Agent attestation submitted",
+        extra=registration_metadata,
+    )
 
     # check to see if the agent exists
     r = requests.get(
@@ -114,6 +130,10 @@ def register_with_agentverse(
 
     # if it doesn't then create it
     if r.status_code == 404:
+        logger.debug(
+            "Agent did not exist on agentverse; registering it",
+            extra=registration_metadata,
+        )
         r = requests.post(
             f"{DEFAULT_MAILBOX_API_URL}/",
             headers={
@@ -128,6 +148,10 @@ def register_with_agentverse(
         r.raise_for_status()
 
     # update the readme and the title of the agent to make it easier to find
+    logger.debug(
+        "Registering agent title and readme with Agentverse",
+        extra=registration_metadata,
+    )
     r = requests.put(
         f"{DEFAULT_MAILBOX_API_URL}/{agent_address}",
         headers={
@@ -140,3 +164,4 @@ def register_with_agentverse(
         },
     )
     r.raise_for_status()
+    logger.info("Completed registering agent with Agentverse")
