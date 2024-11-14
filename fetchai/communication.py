@@ -75,7 +75,11 @@ def lookup_endpoint_for_agent(agent_address: str) -> str:
     r.raise_for_status()
 
     request_meta["response_status"] = r.status_code
-    logger.info("Got response looking up agent endpoint")
+    logger.info(
+        "Got response looking up agent endpoint",
+        extra=request_meta,
+    )
+
     return r.json()["endpoints"][0]["url"]
 
 
