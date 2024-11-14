@@ -66,7 +66,10 @@ class Envelope(BaseModel):
 
 
 def lookup_endpoint_for_agent(agent_address: str) -> str:
-    request_meta = {"agent_address": agent_address, "lookup_url": DEFAULT_ALMANAC_API_URL}
+    request_meta = {
+        "agent_address": agent_address,
+        "lookup_url": DEFAULT_ALMANAC_API_URL,
+    }
     logger.debug("looking up endpoint for agent", extra=request_meta)
     r = requests.get(f"{DEFAULT_ALMANAC_API_URL}/agents/{agent_address}")
     r.raise_for_status()
