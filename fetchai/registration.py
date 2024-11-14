@@ -164,4 +164,7 @@ def register_with_agentverse(
         },
     )
     r.raise_for_status()
-    logger.info("Completed registering agent with Agentverse")
+    logger.info(
+        "Completed registering agent with Agentverse",
+        extra=registration_metadata,
+    )
