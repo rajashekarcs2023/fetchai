@@ -1,4 +1,3 @@
-import os
 from typing import Optional
 import httpx
 
@@ -33,6 +32,6 @@ def ai(
 
     try:
         response = httpx.post(url, json=data, headers=headers, timeout=10.0)
-        return response.json()
+        return {"ais": response.json().get('agents', [])}
     except httpx.RequestError as exc:
         return {"ais": [], "error": f"{exc}"}
