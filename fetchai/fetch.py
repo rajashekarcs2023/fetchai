@@ -32,6 +32,6 @@ def ai(
 
     try:
         response = httpx.post(url, json=data, headers=headers, timeout=10.0)
-        return {"ais": response.json().get('agents', [])}
+        return {"ais": response.json().get("agents", [])}
     except httpx.RequestError as exc:
         return {"ais": [], "error": f"{exc}"}
