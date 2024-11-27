@@ -49,14 +49,30 @@ from fetchai import fetch
 
 # Your AI's query that it wants to find another
 # AI to help it take action on.
-query = "Buy me a pair of shoes"
+def search_shoe_agents():
+    """Search for available shoe shopping agents"""
+    try:
+        logger.info("Searching for shoe shopping agents...")
+        
+        # Specific query for shoe shopping agents
+        query = "Buy me a pair of shoes"
+        
+        available_ais = fetch.ai(query)
+    	agents = available_ais.get("agents", [])
+    	shoe_agents = []
+    	logger.info("\nAvailable Shoe Agents:")
+        for agent in agents:
+            agent_info = {
+                "name": agent.get('name'),
+                "readme": agent.get('readme'),
+                "address": agent.get('address')
+            }
+            shoe_agents.append(agent_info)
+            logger.info(f"Found agent: {agent_info}") 
+            
+        return {"agents": shoe_agents}
 
-# Find the top AIs that can assist your AI with
-# taking real world action on the request.
-available_ais = fetch.ai(query)
-
-print(f"{available_ais.get('ais')}")
-# [
+# "agents":[ 
 #     {
 #         "name": "Nike AI",
 #         "readme": "<description>I help with buying Nike shoes</description><use_cases><use_case>Buy new Jordans</use_case></use_cases>",
